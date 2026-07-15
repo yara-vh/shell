@@ -20,65 +20,69 @@ Column {
     spacing: Tokens.spacing.large
 
     SessionButton {
-        id: logout
-
-        icon: Config.session.icons.logout
-        command: Config.session.commands.logout
-
-        KeyNavigation.down: shutdown
-
-        Component.onCompleted: forceActiveFocus()
-
-        Connections {
-            function onLauncherChanged(): void {
-                if (!root.screenState.launcher)
-                    logout.forceActiveFocus();
-            }
-
-            target: root.screenState
-        }
-    }
-
-    SessionButton {
         id: shutdown
 
-        icon: Config.session.icons.shutdown
+        icon: "power_settings_new"
         command: Config.session.commands.shutdown
 
         KeyNavigation.up: logout
-        KeyNavigation.down: hibernate
-    }
-
-    AnimatedImage {
-        width: Tokens.sizes.session.button
-        height: Tokens.sizes.session.button
-        sourceSize.width: width * ((QsWindow.window as QsWindow)?.devicePixelRatio ?? 1)
-
-        playing: visible
-        asynchronous: true
-        speed: Config.general.sessionGifSpeed
-        source: Paths.absolutePath(Config.paths.sessionGif)
-        fillMode: AnimatedImage.PreserveAspectFit
-    }
-
-    SessionButton {
-        id: hibernate
-
-        icon: Config.session.icons.hibernate
-        command: Config.session.commands.hibernate
-
-        KeyNavigation.up: shutdown
         KeyNavigation.down: reboot
+
+        Component.onCompleted: forceActiveFocus()
     }
 
     SessionButton {
         id: reboot
 
-        icon: Config.session.icons.reboot
+        icon: "restart_alt"
         command: Config.session.commands.reboot
 
-        KeyNavigation.up: hibernate
+        KeyNavigation.up: shutdown
+        KeyNavigation.down: hibernate
     }
+
+    SessionButton {
+        id: hibernate
+
+        isToggle: true // get rid of ugly outline
+
+        icon: "bedtime"
+        command: Config.session.commands.hibernate
+
+        KeyNavigation.up: reboot
+        KeyNavigation.down: logout
+    }
+
+    // SessionButton {
+    //     id: logout
+    //
+    //     icon: Config.session.icons.logout
+    //     command: Config.session.commands.logout
+    //
+    //     KeyNavigation.up: hibernate
+    //     KeyNavigation.down: shutdown
+    //
+    //     Connections {
+    //         function onLauncherChanged(): void {
+    //             if (!root.screenState.launcher)
+    //             logout.forceActiveFocus();
+    //         }
+    //
+    //         target: root.screenState
+    //     }
+    // }
+
+    // AnimatedImage {
+    //     width: Tokens.sizes.session.button
+    //     height: Tokens.sizes.session.button
+    //     sourceSize.width: width * ((QsWindow.window as QsWindow)?.devicePixelRatio ?? 1)
+    //
+    //     playing: visible
+    //     asynchronous: true
+    //     speed: Config.general.sessionGifSpeed
+    //     source: Paths.absolutePath(Config.paths.sessionGif)
+    //     fillMode: AnimatedImage.PreserveAspectFit
+    // }
 
     component SessionButton: IconButton {
         id: button
@@ -87,7 +91,7 @@ Column {
 
         function exec(): void {
             if (!SessionManager.exec(command))
-                Quickshell.execDetached(command);
+            Quickshell.execDetached(command);
         }
 
         implicitWidth: Tokens.sizes.session.button
@@ -104,7 +108,7 @@ Column {
         Keys.onEscapePressed: root.screenState.session = false
         Keys.onPressed: event => {
             if (!Config.session.vimKeybinds)
-                return;
+            return;
 
             if (event.modifiers & Qt.ControlModifier) {
                 if ((event.key === Qt.Key_J || event.key === Qt.Key_N) && KeyNavigation.down) {
