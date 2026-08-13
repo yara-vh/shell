@@ -23,7 +23,7 @@ Item {
     }
 
     implicitWidth: image.width + Tokens.padding.medium * 2
-    implicitHeight: image.height + label.height + Tokens.spacing.extraSmall + Tokens.padding.large + Tokens.padding.medium
+    implicitHeight: image.height + title.height + artist.height + Tokens.spacing.medium + Tokens.padding.large + Tokens.padding.medium
 
     StateLayer {
         radius: Tokens.rounding.large
@@ -75,8 +75,28 @@ Item {
         }
     }
 
+    function getTitle(text: string): string {
+        try {
+            return text.split("/")[1].split(" _")[0];
+        } catch (err) {
+            return "unknown";
+        }
+    }
+
+    function getArtist(text: string): string {
+        try {
+            let artist = text.split("/")[0];
+            if (text.includes("_")) {
+                artist += " (" + text.split("_")[1].split(".")[0] + ")";
+            }
+            return artist;
+        } catch (err) {
+            return "unknown";
+        }
+    }
+
     StyledText {
-        id: label
+        id: title
 
         anchors.top: image.bottom
         anchors.topMargin: Tokens.spacing.extraSmall
@@ -86,8 +106,23 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         elide: Text.ElideRight
         renderType: Text.QtRendering
-        text: root.modelData.relativePath
+        text: root.getTitle(root.modelData.relativePath)
         font: Tokens.font.label.medium
+    }
+    StyledText {
+        id: artist
+
+        anchors.top: title.bottom
+        anchors.topMargin: Tokens.spacing.extraSmall
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        width: image.width - Tokens.padding.medium * 2
+        horizontalAlignment: Text.AlignHCenter
+        elide: Text.ElideRight
+        renderType: Text.QtRendering
+        text: root.getArtist(root.modelData.relativePath)
+        font: Tokens.font.label.small
+        opacity: 0.8
     }
 
     Behavior on scale {
