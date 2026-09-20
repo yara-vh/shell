@@ -89,7 +89,7 @@ ColumnLayout {
             Layout.fillWidth: true
             value: Players.active ? Players.active.position / (Players.active.length || 1) : 0
             enabled: (Players.active?.canSeek ?? false) && !root.hasUnknownLength
-            wavy: true
+            wavy: False
             animateWave: Players.active?.isPlaying ?? false
             waveFrequency: 5
             waveDuration: 2000
@@ -122,17 +122,17 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: Tokens.spacing.extraSmall
 
-        IconButton {
-            type: IconButton.Tonal
-            icon: "shuffle"
-            isRound: true
-            shapeMorph: true
-            checked: Players.active?.shuffle ?? false
-            font: Tokens.font.icon.builders.medium.weight(Font.Medium).build()
-            disabled: !Players.active?.shuffleSupported
-            onClicked: Players.active.shuffle = !Players.active?.shuffle
-            implicitWidth: Math.round(implicitHeight * 0.9)
-        }
+        // IconButton {
+        //     type: IconButton.Tonal
+        //     icon: "shuffle"
+        //     isRound: true
+        //     shapeMorph: true
+        //     checked: Players.active?.shuffle ?? false
+        //     font: Tokens.font.icon.builders.medium.weight(Font.Medium).build()
+        //     disabled: !Players.active?.shuffleSupported
+        //     onClicked: Players.active.shuffle = !Players.active?.shuffle
+        //     implicitWidth: Math.round(implicitHeight * 0.9)
+        // }
 
         IconButton {
             id: previousBtn
@@ -148,12 +148,12 @@ ColumnLayout {
 
         IconButton {
             id: playPauseBtn
+            type: IconButton.Tonal
 
             icon: Players.active?.isPlaying ? "pause" : "play_arrow"
             isRound: true
             shapeMorph: true
             fillWidth: true
-            checked: Players.active?.isPlaying ?? false
             font: Tokens.font.icon.large
             disabled: !Players.active?.canTogglePlaying
             onClicked: Players.active?.togglePlaying()
@@ -170,25 +170,25 @@ ColumnLayout {
             disabled: !Players.active?.canGoNext
             onClicked: Players.active?.next()
         }
-
-        IconButton {
-            type: IconButton.Tonal
-            icon: Players.active?.loopState === MprisLoopState.Track ? "repeat_one" : "repeat"
-            isRound: true
-            shapeMorph: true
-            checked: Players.active?.loopState === MprisLoopState.Track || Players.active?.loopState === MprisLoopState.Playlist
-            font: Tokens.font.icon.builders.medium.weight(Font.Medium).build()
-            disabled: !Players.active?.loopSupported
-            onClicked: {
-                const state = Players.active.loopState;
-                if (state === MprisLoopState.None)
-                    Players.active.loopState = MprisLoopState.Track;
-                else if (state === MprisLoopState.Track)
-                    Players.active.loopState = MprisLoopState.Playlist;
-                else
-                    Players.active.loopState = MprisLoopState.None;
-            }
-            implicitWidth: Math.round(implicitHeight * 0.9)
-        }
+        //
+        // IconButton {
+        //     type: IconButton.Tonal
+        //     icon: Players.active?.loopState === MprisLoopState.Track ? "repeat_one" : "repeat"
+        //     isRound: true
+        //     shapeMorph: true
+        //     checked: Players.active?.loopState === MprisLoopState.Track || Players.active?.loopState === MprisLoopState.Playlist
+        //     font: Tokens.font.icon.builders.medium.weight(Font.Medium).build()
+        //     disabled: !Players.active?.loopSupported
+        //     onClicked: {
+        //         const state = Players.active.loopState;
+        //         if (state === MprisLoopState.None)
+        //             Players.active.loopState = MprisLoopState.Track;
+        //         else if (state === MprisLoopState.Track)
+        //             Players.active.loopState = MprisLoopState.Playlist;
+        //         else
+        //             Players.active.loopState = MprisLoopState.None;
+        //     }
+        //     implicitWidth: Math.round(implicitHeight * 0.9)
+        // }
     }
 }

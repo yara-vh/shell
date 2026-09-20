@@ -235,7 +235,7 @@ CustomMouseArea {
                 y: today ? today.y - Tokens.padding.extraSmall - 1 : 0
 
                 implicitSize: today ? Math.max(today.implicitWidth, today.implicitHeight) + Tokens.padding.extraSmall * 2 : 0
-                shape: MaterialShape.Sunny
+                shape: MaterialShape.Circle
 
                 clip: true
                 color: Colours.palette.m3primary

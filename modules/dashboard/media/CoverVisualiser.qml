@@ -75,7 +75,7 @@ Item {
         id: cover
 
         anchors.centerIn: parent
-        shape.shape: MaterialShape.Cookie9Sided
+        shape.shape: MaterialShape.Circle
         implicitWidth: Tokens.sizes.dashboard.mediaCoverArtSize
         implicitHeight: Tokens.sizes.dashboard.mediaCoverArtSize
     }
